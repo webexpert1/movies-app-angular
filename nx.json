@@ -80,5 +80,10 @@
       "style": "scss"
     }
   },
+  "pluginsConfig": {
+    "@nrwl/js": {
+      "analyzeSourceFiles": false
+    }
+  },
   "defaultProject": "streams"
 }

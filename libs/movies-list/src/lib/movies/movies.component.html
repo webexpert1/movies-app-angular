@@ -1,0 +1,89 @@
+
+
+<div class="grid place-items-center h-screen" *ngIf="isLoading">
+    <!-- <mat-progress-spinner diameter=250 
+                        mode="indeterminate"
+              color="accent">
+  </mat-progress-spinner>  -->
+  </div>
+  
+  <div *ngIf="!isLoading" [ngStyle]="{'margin-top': '70px' }">
+      <div class="ml-4">
+        <!-- <mat-form-field class="example-full-width" appearance="fill">
+          <mat-label>Find Movie</mat-label>
+          <input type="text"
+                 placeholder="Pick one"
+                 aria-label="Number"
+                 matInput
+                 [formControl]="myControl"
+                 [matAutocomplete]="auto"
+                 (keyup)="navigateUsingKey($event)">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="getFilterdValue(option).title">
+              {{ getFilterdValue(option).title }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field> -->
+        <!-- <movies-auto-complete
+          [movies]=""></movies-auto-complete> -->
+      </div>
+  
+   
+  </div>
+
+  <div *ngIf="selectedMovie">
+    <div class="main">
+      <div>
+      <div class=" h-40 w-40 cursor-pointer"  [routerLink]="['/movies',selectedMovie.id]">
+        <img [ngStyle]="{'height': '400px'}"   data-src="{{ 'https://image.tmdb.org/t/p/original' + selectedMovie.backdrop_path }}"  alt="selectedMovie?.title">
+        <div class="text-center">  {{selectedMovie.title || selectedMovie.original_title || selectedMovie.name}}</div>
+      </div>
+    </div>
+    </div>
+  </div>
+ <div *ngIf="!selectedMovie">
+  <div class="">
+    <h2 class="ml-3" id="all">All Movies</h2>
+
+  <div class="main">
+    <div *ngFor="let movie of allMovies?.results; let i = index"   >
+    <div (keyup)="navigateUsingKey($event)" tabindex="0" #allMoviesss class="child cursor-pointer"   id="{{ i }}" [ngClass]="addClass(i)" [routerLink]="['/movies',movie.id]">
+      <img   data-src="{{ 'https://image.tmdb.org/t/p/original' + movie.backdrop_path }}"  alt="Sunset in the mountains">
+      <div class="text-center">  {{movie.title || movie.original_title || movie.name}}</div>
+    </div>
+  </div>
+  </div>
+  </div>
+
+  <div class="">
+    <h2 class="ml-5 mt-3 ">Trending Movies</h2>
+  <div class="main">
+    <div *ngFor="let movie of trendingMovies?.results; let i = index"
+     
+     >
+    <div (keyup)="navigateUsingKey($event)" tabindex="1" class="child cursor-pointer" [routerLink]="['/movies',movie.id]">
+      <img   data-src="{{ 'https://image.tmdb.org/t/p/original' + movie.backdrop_path }}"  alt="Sunset in the mountains">
+      <div class="text-center">  {{movie.title || movie.original_title || movie.name}}</div>
+    </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="">
+    <h2 class="ml-3 mt-3">Top Rated Movies</h2>
+
+  <div class="main">
+    <div *ngFor="let movie of topRatedMovies?.results; let i = index"
+      [class.activeSearchLink]="i === linkIndex && currentSectionIndex === 2"
+      [ngClass]="{'section-color' : i === linkIndex && currentSectionIndex === 2}">
+    <div (keyup)="navigateUsingKey($event)" tabindex="2" class="child cursor-pointer" [routerLink]="['/movies',movie.id]" >
+      <img   data-src="{{ 'https://image.tmdb.org/t/p/original' + movie.backdrop_path }}"  alt="Sunset in the mountains">
+      <div class="text-center">  {{movie.title || movie.original_title || movie.name}}</div>
+    </div>
+    </div>
+    </div>
+  </div>
+</div> 
+  
+    
+    

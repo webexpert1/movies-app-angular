@@ -14,7 +14,13 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@streams/movie-detail": ["libs/movie-detail/src/index.ts"],
+      "@streams/movies-data": ["libs/movies-data/src/index.ts"],
+      "@streams/movies-list": ["libs/movies-list/src/index.ts"],
+      "@streams/shared": ["libs/shared/src/index.ts"],
+      "@streams/shared-material": ["libs/shared-material/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
