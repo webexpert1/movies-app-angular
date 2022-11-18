@@ -13,8 +13,10 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-import { IconModule } from '@visurel/iconify-angular';
-
+import {MatDialogModule} from '@angular/material/dialog';
+import { IconModule } from '@visurel/iconify-angular'; 
+import { MatTooltipModule } from '@angular/material/tooltip';
+ 
 @NgModule({
   imports: [
     CommonModule,
@@ -31,6 +33,8 @@ import { IconModule } from '@visurel/iconify-angular';
     MatTableModule,
     MatSelectModule,
     MatAutocompleteModule,
+    MatDialogModule,
+    MatTooltipModule,
     IconModule
   ],
   exports: [
@@ -48,6 +52,8 @@ import { IconModule } from '@visurel/iconify-angular';
     MatTableModule,
     MatSelectModule,
     MatAutocompleteModule,
+    MatDialogModule,
+    MatTooltipModule,
     IconModule
   ]
 })

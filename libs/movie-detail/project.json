@@ -9,7 +9,8 @@
       "executor": "@nrwl/angular:ng-packagr-lite",
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
-        "project": "libs/movie-detail/ng-package.json"
+        "project": "libs/movie-detail/ng-package.json",
+        "tailwindConfig": "libs/movie-detail/tailwind.config.js"
       },
       "configurations": {
         "production": {

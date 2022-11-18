@@ -62,6 +62,7 @@ export interface IMovies {
         vote_average: number;
         vote_count: number;
         popularity: number;
+        homepage: string;
         first_air_date?: string | null;
         name?: string | null;
         origin_country?: (string)[] | null;

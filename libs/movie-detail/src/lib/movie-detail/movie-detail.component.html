@@ -1,0 +1,38 @@
+<div [ngStyle]="{'margin-top': '10px' }" class="relative cursor-pointer" *ngIf="(movieDetail$ | async) as movieDetail">
+    <div class="h-40" >
+        
+    
+        <div [routerLink]="['/']">
+            <ic-icon [icon]="icKeyboardBackspace"  color="red"  class="absolute ml-4" [ngStyle]="{'top': '82px', 'left': '25px'}"   size="24px"></ic-icon>
+            <div   class="absolute text-white" [ngStyle]="{'top': '82px', 'left': '55px', 'color': 'white'}">Back</div>
+        </div>
+
+        <img   data-src="{{ movieDetail.backdrop_path ? ('https://image.tmdb.org/t/p/original' + movieDetail.backdrop_path) :  (movieDetail.homepage) }}"  alt="Sunset in the mountains">
+        <div class="container">
+
+        
+        <div class="absolute pointer" [ngStyle]="{'top': '140px', 'font-size': '30px'}">{{movieDetail.title || movieDetail.original_title || movieDetail.name }}: {{ movieDetail.tagline }} </div>
+        <div class="absolute pointer" [ngStyle]="{'top': '200px', width: '600px', 'text-align': 'justify'}">{{ movieDetail.overview }}</div>
+       </div>
+
+       <div class="absolute text-white" [ngStyle]="{'bottom': '100px', 'color': 'white'}">
+         <div class="text-xl">More Details</div>
+         <div [ngStyle]="{'display': 'flex', 'justify-content': 'space-between'}">
+            <div class="flex-none w-14 h-14 mr-4 ...">
+              Release
+              <div>{{ movieDetail.release_date | date}}</div>
+            </div>
+            <div class="flex-none pr-4">
+                Genres
+               <div *ngFor="let genre of movieDetail!.genres">{{ genre?.name}}</div>
+            </div>
+            <div class="flex-1">
+              Languages
+              <div *ngFor="let genre of movieDetail!.spoken_languages">{{ genre?.name}}</div>
+            </div>
+          </div>
+
+       </div>
+
+    </div>
+    </div>

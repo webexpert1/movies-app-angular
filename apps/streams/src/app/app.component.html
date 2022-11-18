@@ -1,2 +1,7 @@
-<!-- <streams-nx-welcome></streams-nx-welcome> -->
-<router-outlet></router-outlet>
+<div class="navbar">
+    <streams-header></streams-header>
+</div>
+    
+<div [ngStyle]="{'margin-top': '60px'}">
+    <router-outlet></router-outlet>
+</div>

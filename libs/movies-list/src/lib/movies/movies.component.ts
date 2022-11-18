@@ -1,7 +1,9 @@
-import { ChangeDetectorRef, Component, OnInit, ElementRef, HostListener, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ElementRef, HostListener, QueryList, ViewChildren, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { finalize, map, Observable, startWith, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, finalize, fromEvent, map, Observable, startWith, Subscription, switchMap, tap } from 'rxjs';
 import { IMovie, IMovies, MoviesDataService } from '@streams/movies-data'
+import { MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER } from '@angular/material/autocomplete';
+import { MAT_SELECT_SCROLL_STRATEGY_PROVIDER } from '@angular/material/select';
 
 export enum KEY_CODE {
   RIGHT_ARROW = 39,
@@ -16,6 +18,10 @@ export enum KEY_CODE {
   selector: 'streams-movies',
   templateUrl: './movies.component.html',
   styleUrls: ['./movies.component.scss'],
+  providers: [
+    MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER,
+    MAT_SELECT_SCROLL_STRATEGY_PROVIDER,
+  ]
 })
 export class MoviesComponent implements OnInit {
   myControl = new FormControl('');
@@ -60,7 +66,10 @@ export class MoviesComponent implements OnInit {
     // );
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
-      map(value => this._filter(value || '')),
+      map(value => {
+        console.log('val is', value)
+        return this._filter(value || '');
+      }),
     );
     this.getMovies();
     this.getTopRatedMovies();
@@ -205,8 +214,7 @@ export class MoviesComponent implements OnInit {
           if(res.results) {
           this.trendingMovies = res;
           }
-          // this.spinner.hide();
-          // this.isLoading = false;
+          this.isLoading = false;
           console.log('tre',res.results)
         },
         error:(e) => {
@@ -217,64 +225,56 @@ export class MoviesComponent implements OnInit {
 
   getMovies() {
     this.allMovies$ = this.movieDataService.fetchMovies()
-        // .pipe(finalize(() => {
-        //   this.isLoading = false;
-        // }))
+        .pipe(finalize(() => {
+          this.isLoading = false;
+        }))
         .subscribe({
           next: (res) => {
             if(res.results) {
             this.allMovies = res;
-            this.options = res.results
-            // this.isLoading = false;
+            this.options = [...res.results]
+            this.isLoading = false;
             }
-            console.log('options', this.options)
           },
           error:(e) => {
 
           }
         })
-        // .add(() => {
-        //   console.log('top')
-        // })
   }
 
   getTopRatedMovies() {
     this.topRatedMovies$ = this.movieDataService.fetchTopRated()
-        // .pipe(finalize(() => {
-        //   this.isLoading = false;
-        // }))
+        .pipe(finalize(() => {
+          this.isLoading = false;
+        }))
         .subscribe({
           next: (res) => {
             if(res.results) {
             this.topRatedMovies = res;
-            // this.isLoading = false;
+            this.isLoading = false;
             }
-            console.log('top',res.results)
           },
           error:(e) => {
-
+            this.isLoading = false;
           },
           
         })
-        // .add(() => {
-        //   console.log('top')
-        // })
   }
 
   // navigateToDetail(id: number) {
   //   console.log(id)
   // }
 
-  // ngOnDestroy() {
-  //   if(this.allMovies$) {
-  //     this.allMovies$.unsubscribe();
-  //   }
-  //   if(this.trendingMovies$) {
-  //     this.trendingMovies$.unsubscribe();
-  //   }
-  //   if(this.topRatedMovies$) {
-  //     this.topRatedMovies$.unsubscribe();
-  //   }
-  // }
+  ngOnDestroy() {
+    if(this.allMovies$) {
+      this.allMovies$.unsubscribe();
+    }
+    if(this.trendingMovies$) {
+      this.trendingMovies$.unsubscribe();
+    }
+    if(this.topRatedMovies$) {
+      this.topRatedMovies$.unsubscribe();
+    }
+  }
 
 }
