@@ -6,3 +6,10 @@
  .pointer {
     cursor: pointer;
  }
+
+ .card{
+    grid-auto-flow: row;
+    grid-template-columns: 1fr 1fr 1fr;
+    display: grid;
+    gap: 20px;
+  }
