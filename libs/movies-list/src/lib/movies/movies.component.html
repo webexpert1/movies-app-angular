@@ -33,7 +33,7 @@
     <div *ngIf="selectedMovie">
       <div class="main">
         <div>
-        <div class=" h-40 w-40 cursor-pointer"  [routerLink]="['/movies',selectedMovie.id]">
+        <div class=" h-40 w-40 pointer"  [routerLink]="['/movies',selectedMovie.id]">
           <img [ngStyle]="{'height': '400px'}"   data-src="{{ 'https://image.tmdb.org/t/p/original' + selectedMovie.backdrop_path }}"  alt="selectedMovie?.title">
           <div class="text-center">  {{selectedMovie.title || selectedMovie.original_title || selectedMovie.name}}</div>
         </div>
@@ -46,7 +46,7 @@
 
       <div class="main">
         <div *ngFor="let movie of allMovies?.results; let i = index"   >
-        <div (keyup)="navigateUsingKey($event)" tabindex="0" #allMoviesss class="child cursor-pointer"  [routerLink]="['/movies',movie.id]">
+        <div  (keyup)="onKeyUp($event, movie)" tabindex="0" #allMoviesss class="child pointer"  [routerLink]="['/movies',movie.id]">
           <img   data-src="{{ 'https://image.tmdb.org/t/p/original' + movie.backdrop_path }}"  alt="Sunset in the mountains">
           <div [ngStyle]="{'text-align': 'center'}">  {{movie.title || movie.original_title || movie.name}}</div>
         </div>
@@ -60,7 +60,7 @@
         <div *ngFor="let movie of trendingMovies?.results; let i = index"
         
         >
-        <div (keyup)="navigateUsingKey($event)" tabindex="1" class="child" [routerLink]="['/movies',movie.id]">
+        <div (keyup)="navigateUsingKey($event)" tabindex="1" class="child pointer" (keyup)="onKeyUp($event, movie)" [routerLink]="['/movies',movie.id]">
           <img data-src="{{ 'https://image.tmdb.org/t/p/original' + movie.backdrop_path }}"  alt="Sunset in the mountains">
           <div [ngStyle]="{'text-align': 'center'}">  {{movie.title || movie.original_title || movie.name}}</div>
         </div>
@@ -72,10 +72,8 @@
         <h2 class="ml-3 mt-3">Top Rated Movies</h2>
 
       <div class="main">
-        <div *ngFor="let movie of topRatedMovies?.results; let i = index"
-          [class.activeSearchLink]="i === linkIndex && currentSectionIndex === 2"
-          [ngClass]="{'section-color' : i === linkIndex && currentSectionIndex === 2}">
-        <div (keyup)="navigateUsingKey($event)" tabindex="2" class="child" [routerLink]="['/movies',movie.id]" >
+        <div *ngFor="let movie of topRatedMovies?.results; let i = index">
+        <div (keyup)="navigateUsingKey($event)" tabindex="2" class="child" (keyup)="onKeyUp($event, movie)" [routerLink]="['/movies',movie.id]" >
           <img data-src="{{ 'https://image.tmdb.org/t/p/original' + movie.backdrop_path }}"  alt="Sunset in the mountains">
           <div [ngStyle]="{'text-align': 'center'}">  {{movie.title || movie.original_title || movie.name}}</div>
         </div>

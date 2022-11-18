@@ -22,6 +22,5 @@ export class HeaderComponent implements OnInit {
 			this.navbar?.nativeElement.classList.add('bg-black');
 			this.navbar?.nativeElement.classList.remove('bg-transparent');
 		}
-    console.log('scrolling', position, this.navbar)
 	}
 }

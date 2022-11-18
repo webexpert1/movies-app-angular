@@ -1,3 +1,4 @@
+import { Router } from '@angular/router';
 import { ChangeDetectorRef, Component, OnInit, ElementRef, HostListener, QueryList, ViewChildren, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, finalize, fromEvent, map, Observable, startWith, Subscription, switchMap, tap } from 'rxjs';
@@ -46,28 +47,12 @@ export class MoviesComponent implements OnInit {
   startIndex: number = 0;
   currentSectionIndex: number = 0;
   
-  constructor(private movieDataService: MoviesDataService, private cdr: ChangeDetectorRef) {}
-
-  ngAfterViewInit() {
-    this.allMoviesRef.changes.subscribe(() => {
-      console.log("Item elements are now in the DOM!", this.allMoviesRef.length);
-      // this.allMoviesRef.find(x => x.).
-      // const htmlElement = document.getElementById(this.selectedItemId);
-
-    });
-  }
+  constructor(private movieDataService: MoviesDataService, private cdr: ChangeDetectorRef, private router: Router) {}
     
   ngOnInit(): void {
-    // this.trendingMovies$ = this.movieDataService.fetchTrending();
-    // this.spinner.show();
-    // this.filteredOptions = this.myControl.valueChanges.pipe(
-    //   startWith(''),
-    //   map(value => this._filter(value || '')),
-    // );
     this.filteredOptions = this.myControl.valueChanges.pipe(
       startWith(''),
       map(value => {
-        console.log('val is', value)
         return this._filter(value || '');
       }),
     );
@@ -76,13 +61,19 @@ export class MoviesComponent implements OnInit {
     this.getTrendingMovies();
   }
 
+  onKeyUp(event: KeyboardEvent, movie: IMovie) {
+    console.log('key Up', movie, event)
+    if(event.code === 'Enter') {
+      this.router.navigate([`/movies/${movie.id}`])
+    }
+
+  }
+
   getFilterdValue(option: any) {
-    console.log('option is ', option.title);
     this.selectedMovie = option;
     return option
   }
   private _filter(value: any): any {
-    console.log('hi', this.options)
     const filterValue = value.toLowerCase();
 
     if(filterValue === '') {
@@ -94,79 +85,13 @@ export class MoviesComponent implements OnInit {
        return this.options.filter((option: any) => option.title.toLowerCase().includes(filterValue));
   }
 
-  // getSelectedMovie(movie: IMovie) {
-  //   // this.selectedMovie = movie;
-  //   return movie?.title
-  // }
-
   addClass(i: number) {
     return String(i);
   }
 
-  setFocus() {
-    console.log('focusing')
-  }
-
   currentId = 0;
   currentFocusedElement!: ElementRef | undefined
-  @HostListener('keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {
-   
-    // console.log(event, 'enter', this.allMoviesRef) 
-    // if (event.keyCode === KEY_CODE.DOWN_ARROW) {
-    //   console.log('DOWN arrow');
-    // }
-
-    // if (event.keyCode === KEY_CODE.UP_ARROW) {
-    //   console.log('uP arrow');
-    // }
-
-    // if (event.keyCode === KEY_CODE.TAB) { 
-    //   console.log('tab arrow');
-    //   let id = 0;
-    //   const elementRef = this.allMoviesRef.find((item, index) => index === this.currentId);
-    //   // console.log('ID is', id)\
-    //   this.currentFocusedElement = elementRef;
-    //   // console.log('element is', elementRef)
-    //   // elementRef?.nativeElement.focus();
-    //   setTimeout(() => elementRef?.nativeElement.focus(), 0);
-
-    //   // console.log(event);
-    //   // let navbar = (document.getElementById(`${id}`));
-    //   // navbar?.focus()
-    //   // console.log('nav is', navbar, id)
-    //   console.log(elementRef?.nativeElement.parentNode)
-    //   this.currentId = this.currentId + 1
-    //   // id += 1;
-    //   // console.log(id, 'id')
-    //   this.cdr.detectChanges();
-
-    // }
-
-    // if(event.keyCode === KEY_CODE.ENTER) {
-    //   console.log('enter enter', this.currentFocusedElement)
-    // }
-
-    // if (event.keyCode === KEY_CODE.RIGHT_ARROW) {
-    //   let id = 0;
-    //   console.log('right arrow');
-    //   console.log(event);
-    //   let navbar = (document.getElementById(`${id}`));
-    //   navbar?.focus()
-    //   console.log('nav is', navbar, id)
-    //   id = ++id
-    //   this.cdr.detectChanges();
-
-    //   let position = (document.documentElement.scrollTop || document.body.scrollTop);
-
-    // }
-
-    // if (event.keyCode === KEY_CODE.LEFT_ARROW) {
-    //   // this.decrement();
-    //   console.log('right arrow');
-    // }
-  }
-  
+ 
 
   navigateUsingKey(event: KeyboardEvent) {
     switch (event.keyCode) {
@@ -215,7 +140,6 @@ export class MoviesComponent implements OnInit {
           this.trendingMovies = res;
           }
           this.isLoading = false;
-          console.log('tre',res.results)
         },
         error:(e) => {
 
@@ -260,10 +184,6 @@ export class MoviesComponent implements OnInit {
           
         })
   }
-
-  // navigateToDetail(id: number) {
-  //   console.log(id)
-  // }
 
   ngOnDestroy() {
     if(this.allMovies$) {
