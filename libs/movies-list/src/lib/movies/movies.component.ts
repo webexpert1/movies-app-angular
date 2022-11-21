@@ -1,10 +1,39 @@
 import { Router } from '@angular/router';
-import { ChangeDetectorRef, Component, OnInit, ElementRef, HostListener, QueryList, ViewChildren, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ElementRef, HostListener, QueryList, ViewChildren, ViewChild, NgZone } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, finalize, fromEvent, map, Observable, startWith, Subscription, switchMap, tap } from 'rxjs';
 import { IMovie, IMovies, MoviesDataService } from '@streams/movies-data'
 import { MAT_AUTOCOMPLETE_SCROLL_STRATEGY_FACTORY_PROVIDER } from '@angular/material/autocomplete';
 import { MAT_SELECT_SCROLL_STRATEGY_PROVIDER } from '@angular/material/select';
+import { ActiveDescendantKeyManager, Highlightable, ListKeyManagerOption } from '@angular/cdk/a11y';
+import SwiperCore , {
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Virtual,
+  Zoom,
+  Autoplay,
+  Thumbs,
+  Controller,
+} from 'swiper';
+import { BehaviorSubject } from "rxjs";
+import { SwiperComponent } from "swiper/angular";
+
+
+
+// install Swiper components
+SwiperCore.use([
+  Navigation,
+  Pagination,
+  Scrollbar,
+  A11y,
+  Virtual,
+  Zoom,
+  Autoplay,
+  Thumbs,
+  Controller
+]);
 
 export enum KEY_CODE {
   RIGHT_ARROW = 39,
@@ -43,11 +72,38 @@ export class MoviesComponent implements OnInit {
   currentTab!: number;
   @ViewChildren('allMoviesss') allMoviesRef!:QueryList<ElementRef>;
 
+  @ViewChild('swiperRef', { static: false }) swiperRef?: SwiperComponent;
+
+  show!: boolean;
+  thumbs: any;
+  slides$ = new BehaviorSubject<string[]>(['']);
+
+
   linkIndex = 0;
   startIndex: number = 0;
   currentSectionIndex: number = 0;
+  private keyManager!: ActiveDescendantKeyManager<any>;
+  responsiveOptions: any =  [];
   
-  constructor(private movieDataService: MoviesDataService, private cdr: ChangeDetectorRef, private router: Router) {}
+  constructor(private movieDataService: MoviesDataService, private cdr: ChangeDetectorRef, private router: Router,  private ngZone: NgZone) {
+    this.responsiveOptions = [
+      {
+          breakpoint: '1024px',
+          numVisible: 3,
+          numScroll: 3
+      },
+      {
+          breakpoint: '768px',
+          numVisible: 2,
+          numScroll: 2
+      },
+      {
+          breakpoint: '560px',
+          numVisible: 1,
+          numScroll: 1
+      }
+  ];
+  }
     
   ngOnInit(): void {
     this.filteredOptions = this.myControl.valueChanges.pipe(
@@ -60,6 +116,110 @@ export class MoviesComponent implements OnInit {
     this.getTopRatedMovies();
     this.getTrendingMovies();
   }
+
+  ngAfterViewInit() {
+    if(this.allMovies) {
+      this.keyManager = new ActiveDescendantKeyManager(this.allMovies as any)
+      .withWrap()
+      .withTypeAhead();
+    }
+   
+  }
+
+
+  getSlides() {
+    console.log('hi')
+    this.slides$.next(Array.from({ length: 600 }).map((el, index) => `Slide ${index + 1}`));
+  }
+
+  thumbsSwiper: any;
+  setThumbsSwiper(swiper: any) {
+    console.log('hi swiper', swiper)
+    this.thumbsSwiper = swiper;
+  }
+  controlledSwiper: any;
+  setControlledSwiper(swiper: any) {
+    this.controlledSwiper = swiper;
+    console.log('hieee swiper', swiper)
+  }
+
+  indexNumber = 1;
+  exampleConfig = { slidesPerView: 3 };
+  slidesPerView: number = 4;
+  pagination: any = false;
+
+  slides2 = ['slide 1', 'slide 2', 'slide 3'];
+  replaceSlides() {
+    this.slides2 = ['foo', 'bar'];
+  }
+
+  togglePagination() {
+    if (!this.pagination) {
+      this.pagination = { type: 'fraction' };
+    } else {
+      this.pagination = false;
+    }
+  }
+
+  navigation = false;
+  toggleNavigation() {
+    this.navigation = !this.navigation;
+  }
+
+  scrollbar: any = false;
+  toggleScrollbar() {
+    if (!this.scrollbar) {
+      this.scrollbar = { draggable: true };
+    } else {
+      this.scrollbar = false;
+    }
+  }
+  breakpoints = {
+    640: { slidesPerView: 2, spaceBetween: 20 },
+    768: { slidesPerView: 4, spaceBetween: 40 },
+    1024: { slidesPerView: 4, spaceBetween: 50 },
+  };
+
+  slides = Array.from({ length: 5 }).map((el, index) => `Slide ${index + 1}`);
+  virtualSlides = Array.from({ length: 600 }).map((el, index) => `Slide ${index + 1}`);
+
+  log(log: string) {
+    // console.log(string);
+  }
+
+  breakPointsToggle!: boolean;
+  breakpointChange() {
+    this.breakPointsToggle = !this.breakPointsToggle;
+    this.breakpoints = {
+      640: { slidesPerView: 2, spaceBetween: 20 },
+      768: { slidesPerView: 4, spaceBetween: 40 },
+      1024: { slidesPerView: this.breakPointsToggle ? 7 : 5, spaceBetween: 50 },
+    };
+  }
+
+  slidesEx = ['first', 'second'];
+
+  onSlideChange(swiper: any) {
+    if (swiper.isEnd) {
+      // all swiper events are run outside of ngzone, so use ngzone.run or detectChanges to update the view.
+      this.ngZone.run(() => {
+        this.slidesEx = [...this.slidesEx, `added ${this.slidesEx.length - 1}`];
+      });
+      console.log(this.slidesEx);
+    }
+  }
+
+
+
+  // onKeyUp(event: KeyboardEvent) {
+  //   console.log('keyboard event is', event);
+  //   console.log('key manager is', this.keyManager)
+  //   // if (event.keyCode === ENTER) {
+  //   //   this.selection = this.keyManager.activeItem.product;
+  //   // } else {
+  //   //   this.keyManager.onKeydown(event);
+  //   // }
+  // }
 
   onKeyUp(event: KeyboardEvent, movie: IMovie) {
     console.log('key Up', movie, event)
@@ -87,6 +247,10 @@ export class MoviesComponent implements OnInit {
 
   addClass(i: number) {
     return String(i);
+  }
+
+  onKeydown1(event: any) {
+    console.log('event is', event)
   }
 
   currentId = 0;
@@ -184,6 +348,14 @@ export class MoviesComponent implements OnInit {
           
         })
   }
+
+  getImageUrl(movie: IMovie): string {
+    if(movie) {
+      return 'https://image.tmdb.org/t/p/original' + movie.backdrop_path
+    }
+    return '';
+  }
+
 
   ngOnDestroy() {
     if(this.allMovies$) {

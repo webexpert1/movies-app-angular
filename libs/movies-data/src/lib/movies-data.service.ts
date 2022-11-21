@@ -10,7 +10,6 @@ import { HttpClient } from '@angular/common/http';
 export class MoviesDataService {
 
   baseURL = environment.baseURL; 
-  // base_url = "https://image.tmdb.org/t/p/original/";
   constructor(private http: HttpClient) { }
 
   fetchMovies(): Observable<IMovies> { 

@@ -2,5 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@import 'swiper/scss';
+@import 'swiper/scss/navigation';
+@import 'swiper/scss/pagination';
+@import 'swiper/css/keyboard';
+
+
+// @import '~swiper/swiper.min.css';
+// @import '~swiper/modules/navigation/navigation.min.css';
+// @import '~swiper/modules/pagination/pagination.min.css';
+
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/prebuilt-themes/indigo-pink.css';
+
+// "node_modules/primeng/resources/primeng.min.css",
+// styles

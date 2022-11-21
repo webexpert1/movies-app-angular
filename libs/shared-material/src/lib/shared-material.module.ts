@@ -16,7 +16,12 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatDialogModule} from '@angular/material/dialog';
 import { IconModule } from '@visurel/iconify-angular'; 
 import { MatTooltipModule } from '@angular/material/tooltip';
- 
+
+import {BadgeModule} from 'primeng/badge';
+import {CarouselModule} from 'primeng/carousel';
+import {ButtonModule} from 'primeng/button';
+import { SwiperModule } from 'swiper/angular';
+
 @NgModule({
   imports: [
     CommonModule,
@@ -35,7 +40,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatAutocompleteModule,
     MatDialogModule,
     MatTooltipModule,
-    IconModule
+    IconModule,
+    BadgeModule,
+    CarouselModule,
+    ButtonModule,
+    SwiperModule
   ],
   exports: [
     CommonModule,
@@ -54,7 +63,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatAutocompleteModule,
     MatDialogModule,
     MatTooltipModule,
-    IconModule
+    IconModule,
+    BadgeModule,
+    CarouselModule,
+    ButtonModule,
+    SwiperModule
   ]
 })
 export class SharedMaterialModule {}

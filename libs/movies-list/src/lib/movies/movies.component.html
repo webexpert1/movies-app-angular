@@ -7,7 +7,7 @@
   </mat-progress-spinner> 
 </div>
   
-  <div class="container">
+  <div class="">
     <div *ngIf="!isLoading" [ngStyle]="{'margin-top': '70px' }">
         <div [ngStyle]="{'padding-left': '10px'}">
           <mat-form-field class="example-full-width" appearance="fill">
@@ -40,47 +40,45 @@
       </div>
       </div>
     </div>
+
     <div *ngIf="!selectedMovie">
-      <div class="">
-        <h2 class="space-text" id="all">All Movies</h2>
-
-      <div class="main">
-        <div *ngFor="let movie of allMovies?.results; let i = index"   >
-        <div  (keyup)="onKeyUp($event, movie)" tabindex="0" #allMoviesss class="child pointer"  [routerLink]="['/movies',movie.id]">
-          <img   data-src="{{ 'https://image.tmdb.org/t/p/original' + movie.backdrop_path }}"  alt="Sunset in the mountains">
-          <div [ngStyle]="{'text-align': 'center'}">  {{movie.title || movie.original_title || movie.name}}</div>
-        </div>
-      </div>
-      </div>
-      </div>
-
-      <div class="space-text">
-        <h2 class="ml-5 mt-3 ">Trending Movies</h2>
-      <div class="main">
-        <div *ngFor="let movie of trendingMovies?.results; let i = index"
-        
-        >
-        <div (keyup)="navigateUsingKey($event)" tabindex="1" class="child pointer" (keyup)="onKeyUp($event, movie)" [routerLink]="['/movies',movie.id]">
-          <img data-src="{{ 'https://image.tmdb.org/t/p/original' + movie.backdrop_path }}"  alt="Sunset in the mountains">
-          <div [ngStyle]="{'text-align': 'center'}">  {{movie.title || movie.original_title || movie.name}}</div>
-        </div>
-        </div>
-      </div>
+      <div  class="container">
+        <div [ngStyle]="{'padding-bottom': '5px'}">All Movies</div>
+        <swiper [slidesPerView]="4" [spaceBetween]="50" (swiper)="setThumbsSwiper($event)" [navigation]="{ enabled: true }"
+            [pagination]="{ clickable: true }"  [scrollbar]="{ draggable: true }" [watchSlidesProgress]="true" >
+            <ng-template swiperSlide  *ngFor="let movie of allMovies?.results; let i = index">
+              <!-- <span class="small-text">{{movie.title || movie?.original_title || movie?.name}}</span>
+              <img   [src]="getImageUrl(movie)"  alt="movie.title"> -->
+              <streams-movie-card [movie]="movie"  [routerLink]="['/movies',movie.id]" ></streams-movie-card>
+            </ng-template>
+        </swiper>
       </div>
 
-      <div class="space-text">
-        <h2 class="ml-3 mt-3">Top Rated Movies</h2>
-
-      <div class="main">
-        <div *ngFor="let movie of topRatedMovies?.results; let i = index">
-        <div (keyup)="navigateUsingKey($event)" tabindex="2" class="child" (keyup)="onKeyUp($event, movie)" [routerLink]="['/movies',movie.id]" >
-          <img data-src="{{ 'https://image.tmdb.org/t/p/original' + movie.backdrop_path }}"  alt="Sunset in the mountains">
-          <div [ngStyle]="{'text-align': 'center'}">  {{movie.title || movie.original_title || movie.name}}</div>
-        </div>
-        </div>
-        </div>
+      <div  class="container">
+        <div [ngStyle]="{'padding-bottom': '5px'}">Trending Movies</div>
+        <swiper [slidesPerView]="4" [spaceBetween]="50" (swiper)="setThumbsSwiper($event)" [navigation]="{ enabled: true }"
+          [pagination]="{ clickable: true }"  [scrollbar]="{ draggable: true }" [watchSlidesProgress]="true" >
+          <ng-template swiperSlide  *ngFor="let movie of trendingMovies?.results; let i = index">
+            <!-- <span class="small-text">{{movie?.title || movie?.original_title || movie?.name}}</span>
+            <img   [src]="getImageUrl(movie)"  alt="movie.title"> -->
+            <streams-movie-card [movie]="movie"  [routerLink]="['/movies',movie.id]" class=""></streams-movie-card>
+          </ng-template>
+        </swiper>
       </div>
-    </div> 
+
+      <div class="container">
+        <div [ngStyle]="{'padding-bottom': '5px'}">Top Rated Movies</div>
+        <swiper [slidesPerView]="4" [spaceBetween]="50" (swiper)="setThumbsSwiper($event)" [navigation]="{ enabled: true }"
+        [pagination]="{ clickable: true }"  [scrollbar]="{ draggable: true }" [watchSlidesProgress]="true" >
+        <ng-template swiperSlide  *ngFor="let movie of topRatedMovies?.results; let i = index">
+          <!-- <span class="small-text">{{movie?.title || movie?.original_title || movie?.name}}</span>
+          <img   [src]="getImageUrl(movie)"  alt="movie.title"> -->
+          <streams-movie-card  [routerLink]="['/movies',movie.id]" [movie]="movie" class="child"></streams-movie-card>
+        </ng-template>
+      </swiper>
+      </div>
+    </div>
+   
   </div>
   
     

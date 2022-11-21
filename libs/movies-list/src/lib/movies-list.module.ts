@@ -6,9 +6,15 @@ import { MoviesComponent } from './movies/movies.component';
 import { ReactiveFormsModule } from '@angular/forms';
 // import { SharedMaterialModule } from './../../../shared-material/lib/shared-material'
 import { SharedMaterialModule } from '@streams/shared-material';
+import { MovieCardComponent } from './movie-card/movie-card.component';
 
 @NgModule({
-  imports: [CommonModule, ReactiveFormsModule, RouterModule, SharedMaterialModule],
-  declarations: [MoviesComponent],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    SharedMaterialModule,
+  ],
+  declarations: [MoviesComponent, MovieCardComponent],
 })
 export class MoviesListModule {}
