@@ -47,9 +47,8 @@
         <swiper [slidesPerView]="4" [spaceBetween]="50" (swiper)="setThumbsSwiper($event)" [navigation]="{ enabled: true }"
             [pagination]="{ clickable: true }"  [scrollbar]="{ draggable: true }" [watchSlidesProgress]="true" >
             <ng-template swiperSlide  *ngFor="let movie of allMovies?.results; let i = index">
-              <!-- <span class="small-text">{{movie.title || movie?.original_title || movie?.name}}</span>
-              <img   [src]="getImageUrl(movie)"  alt="movie.title"> -->
-              <streams-movie-card [movie]="movie"  [routerLink]="['/movies',movie.id]" ></streams-movie-card>
+      
+              <streams-movie-card [movie]="movie"  [routerLink]="['/movies',movie.id]" class="pointer"></streams-movie-card>
             </ng-template>
         </swiper>
       </div>
@@ -59,9 +58,7 @@
         <swiper [slidesPerView]="4" [spaceBetween]="50" (swiper)="setThumbsSwiper($event)" [navigation]="{ enabled: true }"
           [pagination]="{ clickable: true }"  [scrollbar]="{ draggable: true }" [watchSlidesProgress]="true" >
           <ng-template swiperSlide  *ngFor="let movie of trendingMovies?.results; let i = index">
-            <!-- <span class="small-text">{{movie?.title || movie?.original_title || movie?.name}}</span>
-            <img   [src]="getImageUrl(movie)"  alt="movie.title"> -->
-            <streams-movie-card [movie]="movie"  [routerLink]="['/movies',movie.id]" class=""></streams-movie-card>
+            <streams-movie-card [movie]="movie"  [routerLink]="['/movies',movie.id]" class="pointer"></streams-movie-card>
           </ng-template>
         </swiper>
       </div>
@@ -71,9 +68,7 @@
         <swiper [slidesPerView]="4" [spaceBetween]="50" (swiper)="setThumbsSwiper($event)" [navigation]="{ enabled: true }"
         [pagination]="{ clickable: true }"  [scrollbar]="{ draggable: true }" [watchSlidesProgress]="true" >
         <ng-template swiperSlide  *ngFor="let movie of topRatedMovies?.results; let i = index">
-          <!-- <span class="small-text">{{movie?.title || movie?.original_title || movie?.name}}</span>
-          <img   [src]="getImageUrl(movie)"  alt="movie.title"> -->
-          <streams-movie-card  [routerLink]="['/movies',movie.id]" [movie]="movie" class="child"></streams-movie-card>
+          <streams-movie-card  [routerLink]="['/movies',movie.id]" [movie]="movie" class="pointer"></streams-movie-card>
         </ng-template>
       </swiper>
       </div>

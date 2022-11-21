@@ -128,19 +128,16 @@ export class MoviesComponent implements OnInit {
 
 
   getSlides() {
-    console.log('hi')
     this.slides$.next(Array.from({ length: 600 }).map((el, index) => `Slide ${index + 1}`));
   }
 
   thumbsSwiper: any;
   setThumbsSwiper(swiper: any) {
-    console.log('hi swiper', swiper)
     this.thumbsSwiper = swiper;
   }
   controlledSwiper: any;
   setControlledSwiper(swiper: any) {
     this.controlledSwiper = swiper;
-    console.log('hieee swiper', swiper)
   }
 
   indexNumber = 1;
@@ -183,10 +180,6 @@ export class MoviesComponent implements OnInit {
   slides = Array.from({ length: 5 }).map((el, index) => `Slide ${index + 1}`);
   virtualSlides = Array.from({ length: 600 }).map((el, index) => `Slide ${index + 1}`);
 
-  log(log: string) {
-    // console.log(string);
-  }
-
   breakPointsToggle!: boolean;
   breakpointChange() {
     this.breakPointsToggle = !this.breakPointsToggle;
@@ -205,28 +198,14 @@ export class MoviesComponent implements OnInit {
       this.ngZone.run(() => {
         this.slidesEx = [...this.slidesEx, `added ${this.slidesEx.length - 1}`];
       });
-      console.log(this.slidesEx);
     }
   }
 
 
-
-  // onKeyUp(event: KeyboardEvent) {
-  //   console.log('keyboard event is', event);
-  //   console.log('key manager is', this.keyManager)
-  //   // if (event.keyCode === ENTER) {
-  //   //   this.selection = this.keyManager.activeItem.product;
-  //   // } else {
-  //   //   this.keyManager.onKeydown(event);
-  //   // }
-  // }
-
   onKeyUp(event: KeyboardEvent, movie: IMovie) {
-    console.log('key Up', movie, event)
     if(event.code === 'Enter') {
       this.router.navigate([`/movies/${movie.id}`])
     }
-
   }
 
   getFilterdValue(option: any) {
@@ -249,9 +228,6 @@ export class MoviesComponent implements OnInit {
     return String(i);
   }
 
-  onKeydown1(event: any) {
-    console.log('event is', event)
-  }
 
   currentId = 0;
   currentFocusedElement!: ElementRef | undefined
